@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación de Jimena Camila</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,400&family=Parisienne&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --custom-blue: #1d6ba4;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #000;
+            scroll-behavior: smooth;
+        }
+
+        #scroll-container {
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: none; 
+        }
+
+        .page-view {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        #view-envelope {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://raw.githubusercontent.com/regina15033/xv-camila/main/CAMILA%20(6).jpg');
+            background-size: cover;
+            background-position: center;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* Bajado un 5% adicional (de 25vh a 30vh) */
+            padding-top: 30vh; 
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        #view-invitation {
+            background-image: url('https://raw.githubusercontent.com/regina15033/xv-camila/main/CAMILA%20(4).jpg');
+        }
+
+        #view-details {
+            background-image: url('https://raw.githubusercontent.com/regina15033/xv-camila/main/CAMILA%20(5).jpg');
+            justify-content: flex-start;
+            padding-top: 20vh; 
+            color: var(--custom-blue); 
+            text-align: center;
+        }
+
+        #view-countdown {
+            background-image: url('https://raw.githubusercontent.com/regina15033/xv-camila/main/CAMILA%20(5).jpg');
+            color: var(--custom-blue);
+            text-align: center;
+        }
+
+        .fade-in-content {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 2s ease;
+        }
+
+        .show-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .text-te-esperamos {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            letter-spacing: 2.5px;
+            font-size: 0.76rem;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .text-celebrar {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            margin-bottom: -10px;
+        }
+
+        .text-juntos {
+            font-family: 'Parisienne', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .date-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.8rem;
+            font-weight: 400;
+        }
+
+        .date-divider {
+            width: 0;
+            height: 30px;
+            border-left: 2px dotted var(--custom-blue);
+            opacity: 0.6;
+        }
+
+        /* Estilos del Calendario */
+        .reserva-title {
+            font-family: 'Parisienne', cursive;
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .calendar-wrapper {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(8px);
+            padding: 16px;
+            border-radius: 20px;
+            /* Reducido un 20% (de 300px a 240px) */
+            width: 240px;
+            margin: 0 auto 15px;
+            border: 1px solid rgba(29, 107, 164, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .calendar-header {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            font-size: 0.75rem;
+        }
+
+        .calendar-day-name {
+            font-weight: 700;
+            font-size: 0.65rem;
+            margin-bottom: 8px;
+            opacity: 0.7;
+        }
+
+        .calendar-day {
+            padding: 4px 0;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .heart-marker {
+            position: absolute;
+            color: var(--custom-blue);
+            font-size: 1.8rem;
+            z-index: 1;
+            opacity: 0.8;
+        }
+
+        /* Cuenta Regresiva */
+        .faltan-text {
+            font-family: 'Parisienne', cursive;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .countdown-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .countdown-label {
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        .castle-image {
+            position: absolute;
+            bottom: 4vh;
+            width: 84%; 
+            max-width: 385px; 
+            z-index: 1;
+            filter: drop-shadow(0px 0px 10px rgba(29, 107, 164, 0.3));
+            transition: opacity 2.5s ease, transform 1.5s ease;
+        }
+
+        .envelope {
+            position: relative;
+            /* Reducido un 2% (de 176x132 a 172x129) */
+            width: 172px; 
+            height: 129px; 
+            background: var(--custom-blue);
+            background-image: url('https://www.transparenttextures.com/patterns/p6.png');
+            box-shadow: 0 25px 50px rgba(0,0,0,0.7);
+            cursor: pointer;
+            perspective: 1000px;
+        }
+
+        .envelope::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; z-index: 4;
+            border-top: 76px solid #16527d; 
+            border-left: 86px solid transparent;
+            border-right: 86px solid transparent;
+            transform-origin: top;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .envelope .sides {
+            position: absolute;
+            width: 100%; height: 100%; z-index: 3;
+            background: var(--custom-blue);
+            clip-path: polygon(0 0, 50% 65%, 100% 0, 100% 100%, 0 100%);
+        }
+
+        .seal {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 40px; height: 40px; 
+            background: radial-gradient(circle, #f3d082, #b18b3e);
+            border-radius: 50%;
+            transform: translate(-50%, 0%); 
+            z-index: 5;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .seal::after { content: "♥"; color: rgba(139, 101, 8, 0.7); font-size: 22px; }
+        .envelope.open::before { transform: rotateX(180deg); }
+        .envelope.open .seal { opacity: 0; }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            color: #1d6ba4;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="https://raw.githubusercontent.com/regina15033/Vals-cenicienta-/main/Cenicienta%202015%20Vals%20del%20amor%20(Instrumental).mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- PÁGINA 1: EL SOBRE -->
+    <div id="view-envelope">
+        <p id="hint" style="color: #1d6ba4; margin-bottom: 25px; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; font-weight: bold; text-shadow: 0px 0px 10px rgba(255,255,255,0.8);">Da clic para abrir</p>
+        <div class="envelope" id="envelope">
+            <div class="seal"></div>
+            <div class="sides"></div>
+        </div>
+    </div>
+
+    <!-- CONTENEDOR CON SCROLL -->
+    <div id="scroll-container">
+        
+        <!-- PÁGINA 2: NOMBRE -->
+        <div id="view-invitation" class="page-view">
+            <div class="absolute bottom-4 left-0 w-full text-center p-12 bg-white/40 backdrop-blur-sm" style="margin-bottom: 2%;">
+                 <h2 class="font-['Great_Vibes'] text-6xl text-blue-900" style="line-height: 1.4;">Jimena Camila</h2>
+                 <p class="text-sm tracking-[5px] text-blue-900 font-semibold mt-2">MIS 15 AÑOS</p>
+                 <div class="scroll-indicator">Desliza para ver más ↓</div>
+            </div>
+        </div>
+
+        <!-- PÁGINA 3: TE ESPERAMOS (Sin calendario) -->
+        <div id="view-details" class="page-view">
+            <div id="details-content" class="fade-in-content relative z-10">
+                <p class="text-te-esperamos">Te esperamos</p>
+                <h3 class="text-celebrar">PARA CELEBRAR</h3>
+                <h4 class="text-juntos">Juntos</h4>
+                
+                <div class="date-container">
+                    <span>02</span>
+                    <div class="date-divider"></div>
+                    <span>05</span>
+                    <div class="date-divider"></div>
+                    <span>26</span>
+                </div>
+            </div>
+
+            <img id="castle-img" 
+                 class="castle-image fade-in-content" 
+                 src="https://raw.githubusercontent.com/regina15033/xv-camila/main/1477b8bed4713558ef720f2969e31159-Photoroom.png" 
+                 alt="Carruaje Real">
+        </div>
+
+        <!-- PÁGINA 4: CALENDARIO Y CUENTA REGRESIVA -->
+        <div id="view-countdown" class="page-view">
+            <div id="countdown-content" class="fade-in-content">
+                <h5 class="reserva-title">Reserva este día</h5>
+                
+                <div class="calendar-wrapper">
+                    <div class="calendar-header">Mayo 2026</div>
+                    <div class="calendar-grid">
+                        <div class="calendar-day-name">D</div>
+                        <div class="calendar-day-name">L</div>
+                        <div class="calendar-day-name">M</div>
+                        <div class="calendar-day-name">M</div>
+                        <div class="calendar-day-name">J</div>
+                        <div class="calendar-day-name">V</div>
+                        <div class="calendar-day-name">S</div>
+                        
+                        <div class="calendar-day"></div><div class="calendar-day"></div>
+                        <div class="calendar-day"></div><div class="calendar-day"></div>
+                        <div class="calendar-day"></div><div class="calendar-day">1</div>
+                        <div class="calendar-day">
+                            <span class="heart-marker">♥</span>
+                            <span style="position: relative; z-index: 5; color: white;">2</span>
+                        </div>
+                        
+                        <div class="calendar-day">3</div><div class="calendar-day">4</div><div class="calendar-day">5</div>
+                        <div class="calendar-day">6</div><div class="calendar-day">7</div><div class="calendar-day">8</div><div class="calendar-day">9</div>
+                        <div class="calendar-day">10</div><div class="calendar-day">11</div><div class="calendar-day">12</div>
+                        <div class="calendar-day">13</div><div class="calendar-day">14</div><div class="calendar-day">15</div><div class="calendar-day">16</div>
+                        <div class="calendar-day">17</div><div class="calendar-day">18</div><div class="calendar-day">19</div>
+                        <div class="calendar-day">20</div><div class="calendar-day">21</div><div class="calendar-day">22</div><div class="calendar-day">23</div>
+                        <div class="calendar-day">24</div><div class="calendar-day">25</div><div class="calendar-day">26</div>
+                        <div class="calendar-day">27</div><div class="calendar-day">28</div><div class="calendar-day">29</div><div class="calendar-day">30</div>
+                        <div class="calendar-day">31</div>
+                    </div>
+                </div>
+
+                <p class="faltan-text">Faltan</p>
+
+                <div class="countdown-container">
+                    <div class="countdown-item">
+                        <span id="days" class="countdown-number">00</span>
+                        <span class="countdown-label">Días</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="hours" class="countdown-number">00</span>
+                        <span class="countdown-label">Hs</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="minutes" class="countdown-number">00</span>
+                        <span class="countdown-label">Min</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="seconds" class="countdown-number">00</span>
+                        <span class="countdown-label">Seg</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const envelope = document.getElementById('envelope');
+        const viewEnvelope = document.getElementById('view-envelope');
+        const scrollContainer = document.getElementById('scroll-container');
+        const audio = document.getElementById('bg-music');
+        
+        const detailsContent = document.getElementById('details-content');
+        const castleImg = document.getElementById('castle-img');
+        const countdownContent = document.getElementById('countdown-content');
+
+        // Lógica de apertura
+        envelope.addEventListener('click', () => {
+            envelope.classList.add('open');
+            setTimeout(() => {
+                viewEnvelope.style.opacity = '0';
+                setTimeout(() => {
+                    viewEnvelope.style.visibility = 'hidden';
+                    scrollContainer.style.display = 'block';
+                    audio.play().catch(e => console.log("Audio play blocked"));
+                }, 800);
+            }, 1000);
+        });
+
+        // Animaciones al hacer scroll
+        scrollContainer.addEventListener('scroll', () => {
+            const h = scrollContainer.clientHeight;
+            const scroll = scrollContainer.scrollTop;
+            
+            // Página 3
+            if (scroll > h * 0.4) {
+                detailsContent.classList.add('show-content');
+                castleImg.classList.add('show-content');
+            }
+            
+            // Página 4
+            if (scroll > h * 1.4) {
+                countdownContent.classList.add('show-content');
+            }
+        });
+
+        // Cuenta regresiva
+        const targetDate = new Date("May 2, 2026 00:00:00").getTime();
+
+        setInterval(() => {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) return;
+
+            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = d < 10 ? "0" + d : d;
+            document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
+            document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
+            document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
+        }, 1000);
+    </script>
+</body>
+</html>
